@@ -21,6 +21,16 @@
 [] What is a mirror ?
 [] How does private DNS resolution work ? 
 [] What are mirrors? Mirrorlist? How does my OS keep track of mirrors and where does it take the list from?
+[] concurrency (esp. with reference to GO vs JS]
+[] lazy loading vs eager loading
+[] what is webpack? How is bundling different to compiling?
+[] debugger panel in VSCode
+[] abstract syntax tree
+[] ssh
+[] how does git rebase actually work? If I `reword` a commit, but then squash another commit into it
+  in the same menu, what happens first? In what order does git "walk" through the commits?
+  In general, a crash course in rebase would be great.
+[] polyfill
 
 ----- PRIVACY ------------
 
@@ -33,7 +43,11 @@
 
 [] What makes a model a reasoning model?
 [] What is a local model? Are these resource-expensive?
+[] RAG
+[] vector
+[] MCPs
 
 ----- Less important -----
 
 [] fuzzy finder
+

@@ -1,0 +1,39 @@
+
+----- LINUX / GENERAL -----
+[] Snap packs vs flatpacks vs AppImages
+[] disk formatting e.g. USB fdisk
+[] lsblk
+[] pacman - what it does **under the hood**. In particular:
+   - the -S flag "installs from repositories"
+   - the -y flag refreshes
+[] what is the difference between pacman and yay? 
+[] System monitor:
+  - physical memory vs swap memory
+[] "standard output"
+[] init system
+[] display server
+[] TTY
+[] Bios (UEFI) vs bootloader vs OS vs desktop env
+[] "A distribution"
+[] Dockerisation / containarisation / Docker files.
+[] bash vs zsh vs etc.
+[] terminal vs command line vs text prompt
+[] What is a mirror ?
+[] How does private DNS resolution work ? 
+[] What are mirrors? Mirrorlist? How does my OS keep track of mirrors and where does it take the list from?
+
+----- PRIVACY ------------
+
+[] Disk encryption (Mental outlaw: https://youtu.be/KiaRLL5pCnw?si=t8hTeMhF2kMynYZ4)
+[] Is DeepSeek more private than Cursor ?
+[] to what extent can email be private? What is the relationship between TLS encryption and server encryption?
+   Why are metadata not encrypted? What are the metadata - just the header? 
+
+---- AI ------------------
+
+[] What makes a model a reasoning model?
+[] What is a local model? Are these resource-expensive?
+
+----- Less important -----
+
+[] fuzzy finder

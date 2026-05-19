@@ -31,6 +31,8 @@
   in the same menu, what happens first? In what order does git "walk" through the commits?
   In general, a crash course in rebase would be great.
 [] polyfill
+[] what does "compiling a distro" (re: Gentoo) mean?
+[] what does a distro mean to begin with?
 
 ----- PRIVACY ------------
 

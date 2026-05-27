@@ -33,6 +33,8 @@
 [] polyfill
 [] what does "compiling a distro" (re: Gentoo) mean?
 [] what does a distro mean to begin with?
+[] what's a daemon
+[] What is terminal's SIGINT ?
 
 ----- PRIVACY ------------
 

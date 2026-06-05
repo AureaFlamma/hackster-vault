@@ -53,3 +53,6 @@
 
 [] fuzzy finder
 
+---- web dev -------------
+
+[] lazy loading vs eager loading

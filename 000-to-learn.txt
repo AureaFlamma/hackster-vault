@@ -58,3 +58,4 @@
 ---- web dev -------------
 
 [] lazy loading vs eager loading
+[] Canvas, and HTML-in-Canvas

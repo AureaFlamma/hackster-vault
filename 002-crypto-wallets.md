@@ -1,5 +1,5 @@
 things to consider:
-
+- seed phrases are wallet-specific... what if I want to store mine for a vry long time (generations)... what if a given wallet software/hardware doesn't exist 50 years from now?
 things to ask:
 - Post quantum encryption
 - Does Shamir backup make things safer or riskier?
@@ -14,3 +14,16 @@ things to ask:
 - Contract bugs - what are smart contracts anyway?
 - How does signing a crypto transaction even work?
 - Can I choose me own words for the seed phrase?
+
+- UTXO
+- SegWit
+- BIP32/BIP44
+- Change address
+- Taproot
+- hash rate
+- SHA256
+
+- rainbow tables
+
+resources to check out:
+-----------------------

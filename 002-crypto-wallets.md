@@ -1,6 +1,8 @@
-things to consider:
+# things to consider:
 - seed phrases are wallet-specific... what if I want to store mine for a vry long time (generations)... what if a given wallet software/hardware doesn't exist 50 years from now?
-things to ask:
+
+
+# things to ask:
 - Post quantum encryption
 - Does Shamir backup make things safer or riskier?
 - What is the lightning network?
@@ -24,6 +26,14 @@ things to ask:
 - SHA256
 
 - rainbow tables
+- difference between hashing, encoding and checksum.
+- why is rolling dice more secure than using software to do randomness? Why is software bad at being random?
+
+# problems with bitcoin:
+- not cost effective when sending small amounts (?)
+- not anonymous
+- takes a long time when sending small amounts
+- deflationary by design.
 
 resources to check out:
 -----------------------

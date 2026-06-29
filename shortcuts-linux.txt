@@ -1,0 +1,48 @@
+
+====================== SHORTCUTS =============================
+
+These are supposed to be app-agnostic unless otherwise noted.
+
+BASIC VOCAB
+-------------------------------------------------------------
+Tabs                             CTRL
+Windows                          META
+Desktops                         ALT
+
+New                              Tab
+Close                            Esc
+Next                             . (>)
+Previous                         , (<)
+
+TABS | CTRL
+------------------------------------------------------------
+(NB: these have to be set per application)
+
+New tab                          CTRL+Tab
+Close tab                        CTRL+Esc
+Next tab                         CTRL+.
+Previous tab                     CTRL+,
+
+WINDOWS | META
+---------------------------------------------------------------
+New window                        META+Tab []
+Close window                      META+Esc | ALT+f4  [X]
+Focus window                      META+<up/down/left/right> [X]
+Next window                       META+.   [X]
+Previous window                   META+,   [X]
+Window r/l/u/d                    META+<right/left/up/down>
+
+Move window to next desktop       META+ALT+.
+Move window to previous desktop   META+ALT+,
+
+Swap windows order                ?????
+
+DESKTOPS | ALT
+--------------------------------------------------------------  
+New desktop                       ALT+Tab
+Close desktop                     ALT+Esc
+Next desktop                      ALT+.
+Previous desktop                  ALT+,
+Grid view                         ALT+G
+Peak at desktop                   ALT+Space
+Switch to Desktop <1-9>           ALT+<1-9>

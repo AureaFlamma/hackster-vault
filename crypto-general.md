@@ -1,7 +1,8 @@
-             Random number (???? bits)
+             Random number (128/256 bits)
                     |
-                    |   ?????????
-             Seed phrase (12/24 words, BIP-39)
+                    |   *BIP-39*
+                    |
+             Seed phrase (12/24 words)
                     |
                     | PBKDF2 → 512-bit seed → BIP-32 [1:1]
                     v
@@ -31,10 +32,25 @@ Addr  Addr      Addr  Addr     ...            Addr  Addr
 (same public key → Legacy 1..., P2SH 3..., or SegWit bc1... addresses)
 
 
+
+# Random number
+Has 128 or 256 bits. Obtained through *CSPRNG*.
+
+# Random number -> seed phrase
+Random number is hashed
+
+
 ## questions for Claude:
 - is BIP24 a universal standard? Will my seed phrase work with every wallet which uses that standard?
 - Does BIP24 refer to the entire process from random number to addresses, or just the last part (the tree derivation)
-
+- What is CSPRNG and are there other randomness manipulators?
+- What precisely is BIP-39? Is it a process that only affects the master -> seed phrase step or the whole derivation? Is it an algorithm? 
 ## Bigger topic for later:
 - Transactions: why should private/public keys be used only once for receiving and sending?
 - UTXO's, chain analysis/chain tracking and privacy
+- Who maintains bitcoin? Who approves PRs? What are BIPs?
+
+## Other
+- what are bits?
+
+

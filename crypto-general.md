@@ -1,124 +1,117 @@
-             Random number (128/256 bits)
-                    |
-                    |   *BIP-39*
-                    |
-             Seed phrase (12/24 words)
-                    |
-                    | PBKDF2 → 512-bit seed → BIP-32 [1:1]
-                    v
-           Master private key (1 per wallet)
-                    |
-                    | BIP-32 derivation path  [1 : ~4 billion]
-    ________________|________________________________
-    |               |                               |
-    v               v                               v
-Private key 0   Private key 1                 Private key n
-(m/.../0/0)     (m/.../0/1)                    (m/.../0/n)
-    |               |                               |
-    | secp256k1     | secp256k1                     | 
-    | [1:1]         | [1:1]                         | 
-    v               v                               v
-Public key 0    Public key 1    ...           Public key n
-(33 bytes)      (33 bytes)                          |            
-    |               |                               |
-    | SHA256+       | SHA256+                       |
-    | RIPEMD160     | RIPEMD160                     | 
-    | [1:many]      | [1:many]                      | 
-   / \             / \                             / \
-  v   v           v   v                           v   v
-Addr  Addr      Addr  Addr     ...            Addr  Addr
-0a    0b        1a    1b                       na    nb
-
-(same public key → Legacy 1..., P2SH 3..., or SegWit bc1... addresses)
-
-                     Random number (128/256 bits)
-                            |
-                            |   *BIP-39*
-                            |
-                     Seed phrase (12/24 words)
-                            |
-"mnemonic" + salt --------> | PBKDF2 → 512-bit seed → BIP-32 [1:1]
-                            |
-                            v
-                      Binary seed (512 bits) 
-                            |
-"Bitcoin seed" -----------> | BIP-32 derivation path  [1 : ~4 billion]
-                            |
-                            V
-                    Master private key
-                            | 
-                            |_______________ account 0
-                            |                   |
-                            |                   |_____ branch 0 (receiving)
-                            |--- account 1      |         |-- address 0
-                            |--- ...            |         |-- address 1
-                            |--- account n      |         |-- ...
-                                                |         |__ address n
-                                                |
-                                                |        
-                                                |_____ branch 1 (change)
-                                                          |-- address 0
-                                                          |-- ...
-                                                         
+# BASIC STRUCTURE
 
 
 
-                     Random number (128/256 bits)
-                            |
-                            |   *BIP-39*
-                            |
-                     Seed phrase (12/24 words)
-                            |
-"mnemonic" + salt --------> | PBKDF2 → 512-bit seed → BIP-32 [1:1]
-                            |
-                            v
-                      Binary seed (512 bits) 
-                            |
-"Bitcoin seed" -----------> | BIP-32 derivation path  [1 : ~4 billion]
-                            |
-                            V
-                    Master private key
-                            | 
-                            |------------------- purpose (84')
-                            |--- ...                |_____________ coin type
-                            |--- purpose (n)        |--- ....          |---------- account
-                                                                       |--- ...        |---- branch/chain (0 - receiving) 
-                                                                                                 |--- address 0
-                                                                                                 |--- address 1
-                                                                                                 |--- 
+                            Random number (128/256 bits)                                 // Derived from quasi-random data (CPU temp fluctuations, microphone static noise etc.) via *CSPRNG*
+                                    |
+                                    |  BIP-39                                            // BIP_39_dictionary(Random number + SHA-256(Random_number).[0-4]) 
+                                    |                                                    // random number is hashed, and the first 4/8 bits of the hash are appended to the number as a checksum.
+                                    |                                                    // That gives us 132/263 bits, which are then divided into 12/24 11-bit packets. Each packet correspons to a  word
+                                    |                                                    // from the BIP-39 wordlist, whose length is 2^11 = 2048
+                                    |                                                    // PURPOSE: -  checksum is there to protect from mistyping/data corruption via avalanche effect.
+                                    |                                                    //          -  the wordlist is there to make it human-readable/memorable. (words as chosen in such a way that the first 3 letters of a word can identify a word)
+                            Seed phrase (12/24 words)
+                                    |
+"mnemonic" + passphrase (salt) -->  |  BIP-39 (PBKDF2)                                   // concatenated seed phrase (with string "mnemonic" is concatenated with optional passphrase and used as salt) is hashed with SHA-512 256 times.
+                                    |                                                    // PURPOSE: 
+                                    |                                                    // - The repeated hashing is now thought obsolete. It is meant to make *brute-forcing (guessing)* seeds more difficult. In practice, it makes a difference
+                                    |                                                    //    of minutes vs days, rather than feasible to crack vs non-feasible.  
+                                    |                                                    // - passphrase is similarly controversial. See below.
+                                    v
+                            Binary seed (512 bits)
+                                    |
+   "Bitcoin seed" --------------->  |  BIP-32                                            // BIP-32 describes how the tree is derived from the binary seed:
+                                    |                                                    // - both the mechanics (HMAC-SHA512, chain codes, the whole math)
+                                    |                                                    // - and the basic tree structure it: that there are nodes with parents and children, chains, how much depth is possible (hint: a lot)
+                                    |
+                                    v
+                            Master private key
+                                    |
+                                    |  BIP-32 (mechanics)
+                                    |  BIP-43 (meta-rule)                                // BIP-43 is the convention which introduces purposes. It says  that the node below the master is the purpose node. 
+                                    |                                                    // Without it, each wallet would be free to construct the tree in its own way, and assign nodes its own functions,
+                                    |                                                    // within the basic structure parameters described by BIP-32 
+                                    |
+                                    +--------------------+--------- ...
+                                    |                    |                    
+                               purpose (44')        purpose (84')        
+                                    |                    
+                                    |  BIP-44/49/84... (rules)                           // BIP-44 describes the semantics of the 5 levels of the tree (purpose/type/account/chain/address). BIP-49 and others changed the format of addresses.
+                                    |                    
+                                    +-----------------------------+---- ...
+                                    |                             |
+                               coin type (0' = BTC)           coin type (60' = ETH)
+                                    |
+                                    +--------------------+--- ...
+                                    |                    |
+                               account (0')         account (1')
+                                    |
+                                    +--------------------+
+                                    |                    |
+                              chain 0 (receive)    chain 1 (change)
+                                    |                    |
+                                    +---+---+            +---+---+
+                                    |   |   |            |   |   |
+                                  addr addr addr       addr addr addr
+                                   0    1   ...         0    1   ...
+
+
+## Hierarchical Deterministic derivation in detail
+
+                                                                Binary seed (512 bits)
+                                                                        |
+                                                                        | HMAC-SHA512 ("Bitcoin seed")
+                                                                        |
+                                                                        |
+                                                                        V 
+                                                      (left 256 bits)   +   (right 256 bits)                    
+                                                    master private key      master chain code
+                                                            |_______________________|                                         // HARDENED  DERIVATION: private + chain code
+                                                               ________|_____________________                      
+                                                              |        |                    |
+                                                              |        |                    |
+                                                  HMAC-SHA512 |        | HMAC-SHA512        |
+                                                 (+ index 0)  |        | (+ index 1)        |
+                                                              |        V                    V
+                                                              |     child 1 private key    ...
+                                                              |         +
+                                                              |     chain code           
+         SHA256                                               |
+         + RIPEMD160                                          |
+         + encoding              secp256k1                    V
+  child <------------ child <----------------  child private + child chain 
+  address 0          public key 0                  key 0          code 0          
+                        |                                            |
+                        |                                            |
+                        |                                            |
+                        |____________________________________________|                                                        // NORMAL DERIVATION: public key + chain code
+                                    |
+                                 ___|_______________
+                                 |                 |
+                                 V                 V
+                            grandchild 0          ....
+                             private key
+                                 +
+                             chain code
 
 
 
+                               
+## Bitcoin Improvement Proposals:
+- BIP-32 - specifies how Hierarchical Deterministic tree is to be derived from Binary seed
+- BIP-39 - specifies how Binary seed is to be derived from the random number, including seed phrase derivation
+- BIP-43 - specifies that the first node in a HD tree is the purpose node - this allows for different semantics/shapes of the tree. 
+- BIP-44/49/84/86 - the specific purposes/shapes of the tree // <?> 
 
+## Passphrases
+The passphrase is  meant to add extra protection if the seed phrase is leaked. But the only way it can do that, is if it is cryptographically strong - with around 128 bits of entrophy - at which point it is the length of the seed phrase istself and non-human readable. 
+This means that it has to be stored in a paper backup (rather than memorised)... but since its meant to protect against leaked seed phrases, it has to be stored separately to the seed phrase... this increases the risk of losing
+coins due to lost phrases - since now there are twice as many things you mustn't lose.
+Another use case is to add another node at which the tree can diverge - seed phrase + passphrase A yields a different binary seed than same seed phrase with passphrase B, allowing for more than one wallet from the same seed phrase. 
+This may be useful against the 5-pound spanner attack (duress) in that it allows for creation of decoy wallets. However, for normal use cases (different wallet for spending, rainy day, investment etc.), BIP-44+ ensures we can have many accounts on each wallet.
 
-
-## Random number
-Has 128/256 bits. Obtained through *CSPRNG*.
-> The randomness is the most crucial security feature. All other safeguards are only additions. 
-
-## Random number -> seed phrase
-Random number is **hashed** with **SHA-256** and the first 4/8 bits (length/32) of the hash are appended. This yields 132/264 bits which are divided into 12/24 11-bit chunks. Each chunk corresponds to one of the 2^11 (2048) words in a BIP-39 dictionary/map.
-Rationale: 
-- checksum: If you mistype a word whilst entering the seed phrase into a new wallet, the checksum almost definitely won't match, due to the **avalanche effect** of hashing.
-- dictionary: To make it human readable
-
-
-## Seed phrase -> master private key
-**PBKDF2**, a key-stretching function, is applied to the seed phrase:
-- the words are concatenated
-- a **salt** is added (salt = "mnemonic"+user passphrase)     
-- the resulting string is hashed with **SHA-512** 2048 times.
-The result has 512 bits.
-
-Twofold rationale: 
-- Passphrase:
-    - allows you to create multiple wallets from the same seed phrase, by using different passphrases for each.
-    - If strong, protects you against brute forcing your wallet when your seed is leaked. The attacker has to have your seed phrase and then brute force the seedphrase + passphrase hash... however, your passphrase would have to be have some entropy.
-      Brain passphrases have low entropy and are easily brute-forced. Though, it does protect you against a scenario where a non-technical person (your cleaner) discovers your paper backup and doesn't know how to get around cracking the passphrase.
-      In other words, the attacker would have to both be a hacker and have physical access to your paper wallet, reducing the attack surface. 
-- SHA-512 * 2048: In theory, it makes brute forcing 2048 times slower. For every seed (+ passphrase) the attacker guesses, they have to hash it 2048 times. Though that's the difference between cracking something in minutes versus days.
-  This element of PBKDF2 is now considered redundant, as the security provided by it is overshadowed by the entropy of the seed phrase. A non-random seed phrase is crackable with or without it, and a strong one is non-crackable with or without it.
-
+## Attack vectors
+- Brute-forcing (guessing)
 
 ## questions for Claude:
 - is BIP24 a universal standard? Will my seed phrase work with every wallet which uses that standard?

@@ -70,10 +70,10 @@
                                                                ________|_____________________                      
                                                               |        |                    |
                                                               |        |                    |
-                                                  HMAC-SHA512 |        | HMAC-SHA512        |
+                                                  HMAC-SHA512 |        | HMAC-SHA512        |                                // Private key is used to sign transactions. 
                                                  (+ index 0)  |        | (+ index 1)        |
                                                               |        V                    V
-                                                              |     child 1 private key    ...
+                                                              |     child 1 priv key    ...
                                                               |         +
                                                               |     chain code           
          SHA256                                               |
@@ -90,7 +90,7 @@
                                  |                 |
                                  V                 V
                             grandchild 0          ....
-                             private key
+                             priv key
                                  +
                              chain code
 

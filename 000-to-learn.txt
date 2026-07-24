@@ -35,6 +35,8 @@
 [] what does a distro mean to begin with?
 [] what's a daemon
 [] What is terminal's SIGINT ?
+[] What is SSH
+[] How to use the vim-style editor in micro
 
 ----- PRIVACY ------------
 

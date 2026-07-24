@@ -1,0 +1,4 @@
+- check IP address
+curl ifconfig.me
+
+- 

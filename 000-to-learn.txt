@@ -36,6 +36,12 @@
 [] what's a daemon
 [] What is terminal's SIGINT ?
 
+----- GIT ---------------
+[] Understanding manual patch editing - what does all this gore mean?
+  - man git-format-patch 
+  - man git-diff
+  - man git-apply
+
 ----- PRIVACY ------------
 
 [] Disk encryption (Mental outlaw: https://youtu.be/KiaRLL5pCnw?si=t8hTeMhF2kMynYZ4)

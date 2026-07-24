@@ -1,0 +1,24 @@
+======================== MICRO ==========================================
+
+SELECT
+------
+
+by character                     SHIFT + [left/right]
+by line                          SHIFT + [up/down]
+by word                          SHIFT + CTRL + [left/right] DOESN'T WORK
+to start/end of line             SHIFT + [Home/End]
+
+(select one word: position cursor on it and SHIFT+CTRL+right)DOESN'T WORK
+
+
+TABS
+----
+
+move tab right/left              CTRL + [[/]]
+
+
+
+====================== WINDOWS ==========================================
+
+cycle thru windows               ALT + Tab
+cycle thru windows reverse       ALT + SHIFT + Tab,

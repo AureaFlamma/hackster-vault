@@ -1,1 +1,2 @@
 - Crypto address generator on a Raspberry Pi.
+- Better markdown syntax highlight for micro.

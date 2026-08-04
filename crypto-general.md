@@ -1,6 +1,6 @@
 # BASIC STRUCTURE
 
-
+```
 
                             Random number (128/256 bits)                                 // Derived from quasi-random data (CPU temp fluctuations, microphone static noise etc.) via *CSPRNG*
                                     |
@@ -54,10 +54,11 @@
                                     |   |   |            |   |   |
                                   addr addr addr       addr addr addr
                                    0    1   ...         0    1   ...
-
+```
 
 ## Hierarchical Deterministic derivation in detail
 
+```
                                                                 Binary seed (512 bits)
                                                                         |
                                                                         | HMAC-SHA512 ("Bitcoin seed")
@@ -94,9 +95,10 @@
                                  +
                              chain code
 
+```
+
 ### key concepts
-- private key + chain code: why not just keep these two together, rather than splitting them, 
-  if they get hashed together anyway to derive children? According to Pieter Wuille, one of the authors of BIP-32, It is mostly legacy from a solution used in Alan Reiner's Armory software.
+- private key + chain code: why not just keep these two together, rather than splitting them, if they get hashed together anyway to derive children? According to Pieter Wuille, one of the authors of BIP-32, It is mostly legacy from a solution used in Alan Reiner's Armory software.
 - nromal vs hardened derivation.
 
                                

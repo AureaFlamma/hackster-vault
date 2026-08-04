@@ -16,10 +16,6 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 ```
-macOS keychain option:
-```bash
-ssh-add --apple-use-keychain ~/.ssh/id_ed25519
-```
 
 ## 4. Copy your public key
 ```bash

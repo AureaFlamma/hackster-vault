@@ -19,13 +19,13 @@ ssh-add ~/.ssh/id_ed25519
 
 ## 4. Copy your public key
 ```bash
-# macOS
+// macOS
 pbcopy < ~/.ssh/id_ed25519.pub
 
-# Linux
+// Linux
 cat ~/.ssh/id_ed25519.pub
 
-# Windows (Git Bash)
+//  Windows (Git Bash)
 clip < ~/.ssh/id_ed25519.pub
 ```
 

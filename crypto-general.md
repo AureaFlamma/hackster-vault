@@ -97,6 +97,40 @@
 
 ```
 
+## NORMAL DERIVATION
+```
+
+parent pub <---[* G]--- parent private key                   parent chain code                            // NB: + and * don't denote normal arithmetic addition and multiplication.
+    |                        |                                        |                                   // Rather, some fancy elliptic curve math.
+    *-----------------------------------------------------------------*                                   // Indeed, on priv side, + means modular addition, on the pub side - elliptic curve addition.
+                             |                                  |
+                             |                                  |                           
+                             |                            [HMAC-SHA512]
+                             |                    [parent pub + chain code + index]
+                             |                                    |
+                             |                                    |
+                             |                                    V
+                             |                       HMAC_left    +     HMAC_right
+                             |                          |                          
+                             |                         [*G]                       
+                             |                          |                         
+                         [+ HMAC_left]            [+ parent pub]                
+                             |                          |   // vertical route                      
+                             V                          V                           
+                        child priv----[*G]--------> child pub 
+                               // horizontal route
+
+                                child public key
+                                = child private key * G                  // horizontal route
+                                = parent public key + HMAC_left * G      // vertical route 
+                                = parent private key * G + HMAC_left * G
+                                = (parent private key + HMAC_left) * G
+
+                               where HMAC = HMAC-SHA512(parent pub + parent chain code + index) 
+
+                                PROBLEM:                                 
+                                
+```
 ### key concepts
 - private key + chain code: why not just keep these two together, rather than splitting them, if they get hashed together anyway to derive children? According to Pieter Wuille, one of the authors of BIP-32, It is mostly legacy from a solution used in Alan Reiner's Armory software.
 - nromal vs hardened derivation.

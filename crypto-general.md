@@ -1,6 +1,6 @@
 # BASIC STRUCTURE
 
-
+```
 
                             Random number (128/256 bits)                                 // Derived from quasi-random data (CPU temp fluctuations, microphone static noise etc.) via *CSPRNG*
                                     |
@@ -54,10 +54,11 @@
                                     |   |   |            |   |   |
                                   addr addr addr       addr addr addr
                                    0    1   ...         0    1   ...
-
+```
 
 ## Hierarchical Deterministic derivation in detail
 
+```
                                                                 Binary seed (512 bits)
                                                                         |
                                                                         | HMAC-SHA512 ("Bitcoin seed")
@@ -94,7 +95,45 @@
                                  +
                              chain code
 
+```
 
+## NORMAL DERIVATION
+```
+
+parent pub <---[* G]--- parent private key                   parent chain code                            // NB: + and * don't denote normal arithmetic addition and multiplication.
+    |                        |                                        |                                   // Rather, some fancy elliptic curve math.
+    *-----------------------------------------------------------------*                                   // Indeed, on priv side, + means modular addition, on the pub side - elliptic curve addition.
+                             |                                  |
+                             |                                  |                           
+                             |                            [HMAC-SHA512]
+                             |                    [parent pub + chain code + index]
+                             |                                    |
+                             |                                    |
+                             |                                    V
+                             |                       HMAC_left    +     HMAC_right
+                             |                          |                          
+                             |                         [*G]                       
+                             |                          |                         
+                         [+ HMAC_left]            [+ parent pub]                
+                             |                          |   // vertical route                      
+                             V                          V                           
+                        child priv----[*G]--------> child pub 
+                               // horizontal route
+
+                                child public key
+                                = child private key * G                  // horizontal route
+                                = parent public key + HMAC_left * G      // vertical route 
+                                = parent private key * G + HMAC_left * G
+                                = (parent private key + HMAC_left) * G
+
+                               where HMAC = HMAC-SHA512(parent pub + parent chain code + index) 
+
+                                PROBLEM:                                 
+                                
+```
+### key concepts
+- private key + chain code: why not just keep these two together, rather than splitting them, if they get hashed together anyway to derive children? According to Pieter Wuille, one of the authors of BIP-32, It is mostly legacy from a solution used in Alan Reiner's Armory software.
+- nromal vs hardened derivation.
 
                                
 ## Bitcoin Improvement Proposals:
@@ -114,10 +153,11 @@ This may be useful against the 5-pound spanner attack (duress) in that it allows
 - Brute-forcing (guessing)
 
 ## questions for Claude:
-- is BIP24 a universal standard? Will my seed phrase work with every wallet which uses that standard?
-- Does BIP24 refer to the entire process from random number to addresses, or just the last part (the tree derivation)
 - What is CSPRNG and are there other randomness manipulators?
-- What precisely is BIP-39? Is it a process that only affects the master -> seed phrase step or the whole derivation? Is it an algorithm? 
+- What precisely is BIP-39? Is it a process that only affects the master -> seed phrase step or the whole derivation? Is it an algorithm?
+- HMAC_SHA512 vs SHA512 - length extension attacks.
+
+  
 ## Bigger topic for later:
 - Transactions: why should private/public keys be used only once for receiving and sending?
 - UTXO's, chain analysis/chain tracking and privacy

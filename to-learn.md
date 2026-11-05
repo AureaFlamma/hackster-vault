@@ -1,0 +1,4 @@
+- systemctl
+- loginctl, TTY, sessions, getty
+- what's a binary?
+- the single vs double quote problem when escaping paths in .bashrc vs echo

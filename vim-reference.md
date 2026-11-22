@@ -25,7 +25,7 @@
 - `E` until end of current WORD
 - `$` until end of line.
 - `0` until beginning of line.
-- `gg` until end of first line.
+- `gg` until beginning of first line.
 - `G` until end of file.
 - `[number]G` moves to specific line
 
